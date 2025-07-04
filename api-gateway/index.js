@@ -1,6 +1,10 @@
     const express = require("express");
     const cors = require("cors");
 
+
+    const Redis = require("ioredis");
+    const redis = new Redis();
+
     const app = express();
     app.use(cors());
     app.use(express.json());
@@ -18,9 +22,7 @@
     app.get("/api/markets/:symbol/orderbook", async (req, res) => {
     const { symbol } = req.params;
 
-    const Redis = require("ioredis");
-    const redis = new Redis();
-
+    
     const bidsKey = `orderbook_bids:${symbol}`;
     const asksKey = `orderbook_asks:${symbol}`;
     const bidsAmountKey = `amounts:${symbol}:bids`;
@@ -85,6 +87,28 @@ app.get("/api/markets/:symbol/ticker", async (req, res) => {
 
 
 
-    app.listen(4000, () => {
-    console.log("REST API listening on port 4000");
-    });
+app.get("/api/markets/:symbol/candles", async (req,res) => {
+    const { symbol } = req.params;
+    const keys = await redis.keys(`candle:${symbol}:*`);
+    const candles = [];
+    for (const key of keys) {
+       const c = await redis.hgetall(key);
+       candles.push({
+         time: parseInt(c.timestamp),
+         open: parseFloat(c.open),
+         close: parseFloat(c.close),
+         high: parseFloat(c.high),
+         low: parseFloat(c.low),
+         volume: parseFloat(c.volume)
+       });
+    }
+    candles.sort((a,b) => a.time - b.time);
+    res.json(candles);
+});
+
+app.listen(4000, () => {
+  console.log("REST API listening on port 4000");
+});
+
+
+

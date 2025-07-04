@@ -9,9 +9,16 @@ app.use(express.json());
 const redis = new Redis(); 
 app.post("/api/orders", async (req, res) => {
   const order = req.body;
-  if (!order.symbol || !order.price || !order.amount || !order.side) {
-    return res.status(400).json({ error: "Invalid order data" });
-  }
+  if (
+  !order.symbol ||
+  !order.amount ||
+  !order.side ||
+  !order.type ||
+  (order.type === "limit" && !order.price) 
+) {
+  return res.status(400).json({ error: "Invalid order data" });
+}
+
   await redis.lpush("order_queue", JSON.stringify(order));
   await redis.lpush("pending_orders", JSON.stringify(order));
   console.log("Order pushed to queue:", order);
