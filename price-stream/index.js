@@ -1,8 +1,8 @@
 const WebSocket = require("ws");
 const Redis = require("ioredis");
 
-const redis = new Redis();
-const subscriber = new Redis();
+const redis = new Redis({ host: process.env.REDIS_HOST || 'redis'});
+const subscriber = new Redis({ host: process.env.REDIS_HOST || 'redis' });
 
 const wss = new WebSocket.Server({ port: 4003 });
 

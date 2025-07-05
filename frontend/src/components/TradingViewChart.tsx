@@ -45,7 +45,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({ symbol }) => {
     candleSeriesRef.current = candleSeries;
 
     // fetch candles from backend
-    fetch(`http://localhost:4000/api/markets/${symbol}/candles`)
+    fetch(`http://152.42.157.22:4000/api/markets/${symbol}/candles`)
       .then((res) => res.json())
       .then((data: any[]) => {
         const formatted: CandlestickData[] = data.map((candle) => ({

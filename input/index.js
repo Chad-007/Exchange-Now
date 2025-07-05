@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const BASE_URL = "http://localhost:4002/api/orders";
+const BASE_URL = "http://152.42.158.207:4002/api/orders";
 
 const symbols = ["SOL_USDC", "BTC_USDT", "ETH_USDT"];
 

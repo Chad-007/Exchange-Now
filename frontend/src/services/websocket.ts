@@ -22,7 +22,7 @@ export function connectSocket(
     socket.close();
   }
 
-  socket = new WebSocket(`ws://localhost:4003`);
+  socket = new WebSocket(`ws://209.38.125.121:4003`);
 
   socket.onopen = () => {
     console.log("WebSocket connected to", symbol);

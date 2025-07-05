@@ -6,7 +6,7 @@ const Redis = require("ioredis");
 const app = express();
 app.use(cors());
 app.use(express.json());
-const redis = new Redis(); 
+const redis = new Redis({ host: process.env.REDIS_HOST || 'redis' });
 app.post("/api/orders", async (req, res) => {
   const order = req.body;
   if (
@@ -27,3 +27,4 @@ app.post("/api/orders", async (req, res) => {
 app.listen(4002, () => {
   console.log("Order service listening on port 4002");
 });
+
