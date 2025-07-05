@@ -31,7 +31,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
-
+      - name: set image name
+        id: vars
+        run: |
+          IMAGE_NAME=$(basename ${{ matrix.service }})
+          echo "imagename=$IMAGE_NAME" >> $GITHUB_OUTPUT
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
