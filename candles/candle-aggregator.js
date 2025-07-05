@@ -5,7 +5,7 @@ const subscriber = new Redis({ host: process.env.REDIS_HOST || 'redis'});
         
 
 console.log("Candle Aggregator running...");
-// to check if workflow is working
+// to check if workflow is working jjj
 const tradeBuffers = {};
 
 subscriber.subscribe("trades_channel");
