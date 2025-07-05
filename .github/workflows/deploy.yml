@@ -9,6 +9,7 @@ on:
       - 'matching-engine/**'
       - 'price-stream/**'
       - 'services/order-service/**'
+      - 'helm/**'
 
 jobs:
   build:
@@ -17,7 +18,6 @@ jobs:
     strategy:
       matrix:
         service: [candles, matching-engine, price-stream, services/order-service]
-  
 
     steps:
       - name: Checkout
@@ -31,16 +31,29 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
-      - name: set image name
+
+      - name: Set image name
         id: vars
         run: |
           IMAGE_NAME=$(basename ${{ matrix.service }})
           echo "imagename=$IMAGE_NAME" >> $GITHUB_OUTPUT
-      - name: Build and push
+
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: ./${{ matrix.service }}
-          file: ./${{ matrix.service }}/dockerfile  
+          file: ./${{ matrix.service }}/dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USER }}/${{ steps.vars.outputs.imagename }}:latest
+          tags: ${{ secrets.DOCKER_USER }}/${{ steps.vars.outputs.imagename }}:${{ github.sha }}
 
+      - name: Update Helm values with new image tag
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          CHART_NAME=${{ steps.vars.outputs.imagename }}
+          yq e -i ".image.tag = \"$IMAGE_TAG\"" helm/$CHART_NAME/values.yaml
+          
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add helm/$CHART_NAME/values.yaml
+          git commit -m "ci: update $CHART_NAME image to $IMAGE_TAG"
+          git push

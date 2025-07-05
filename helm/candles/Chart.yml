@@ -1,0 +1,5 @@
+apiVersion: v2
+name: candles
+description: Helm chart for the candles 
+version: 0.1.0
+appVersion: "1.0.0"

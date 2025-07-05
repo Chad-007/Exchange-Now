@@ -1,0 +1,4 @@
+image:
+  repository: chad0/price-stream
+  tag: "neww"
+  pullPolicy: IfNotPresent

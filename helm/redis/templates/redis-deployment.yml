@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: redis:latest
+        image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"
         ports:
         - containerPort: 6379
 ---

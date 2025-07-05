@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: matching-engine
-          image: chad0/matching-engine:neww
+          image: "{{ .Values.image.repository}}::{{ .Values.image.tag}}"
           env:
             - name: REDIS_HOST
               value: "redis"  
+        

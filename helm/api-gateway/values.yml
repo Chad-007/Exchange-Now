@@ -1,0 +1,4 @@
+image:
+  repository: chad0/api-gateway
+  tag: "neww"
+  pullPolicy: IfNotPresent

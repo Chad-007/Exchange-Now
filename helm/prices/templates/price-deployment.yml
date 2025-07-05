@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: order-service
+  name: price-stream
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: order-service
+      app: price-stream
   template:
     metadata:
       labels:
-        app: order-service
+        app: price-stream
     spec:
       containers:
-        - name: order-service
-          image: chad0/order-service:new
+        - name: price-stream
+          image: "{{ .Values.image.repository}}::{{ .Values.image.tag}}"
           command: ["node","index.js"]
           ports:
-            - containerPort: 4002
+            - containerPort: 4003
           env:
             - name: REDIS_HOST
               value: "redis"
@@ -27,11 +27,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: order-service
+  name: price-stream
 spec:
   type: LoadBalancer
   selector:
-    app: order-service
+    app: price-stream
   ports:
-    - port: 4002
-      targetPort: 4002
+    - port: 4003
+      targetPort: 4003
