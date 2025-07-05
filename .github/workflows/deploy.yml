@@ -40,6 +40,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./${{ matrix.service }}
-          file: ./${{ matrix.service }}/dockerfile
+          file: ./${{ matrix.service }}/dockerfile  
           push: true
-          tags: ${{ secrets.DOCKER_USER }}/${{ matrix.service }}:latest
+          tags: ${{ secrets.DOCKER_USER }}/${{ steps.vars.outputs.imagename }}:latest
+
