@@ -19,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        service: [candles, matching-engine, price-stream, services/order-service, redis]
+        service: [candles, matching-engine, price-stream, services/order-service]
 
     steps:
       - name: Checkout
