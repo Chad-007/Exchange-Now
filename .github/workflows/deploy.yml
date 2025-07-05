@@ -8,8 +8,10 @@ on:
       - 'candles/**'
       - 'matching-engine/**'
       - 'price-stream/**'
+      - 'orders/**'
       - 'services/order-service/**'
       - 'helm/**'
+      - 'redis/**'
 
 jobs:
   build:
@@ -17,13 +19,13 @@ jobs:
 
     strategy:
       matrix:
-        service: [candles, matching-engine, price-stream, services/order-service]
+        service: [candles, matching-engine, price-stream, services/order-service, redis]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Docker
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
@@ -42,18 +44,35 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./${{ matrix.service }}
-          file: ./${{ matrix.service }}/dockerfile
+          file: ./${{ matrix.service }}/dockerfile    
           push: true
           tags: ${{ secrets.DOCKER_USER }}/${{ steps.vars.outputs.imagename }}:${{ github.sha }}
 
-      - name: Update Helm values with new image tag
+  update-helm:
+    runs-on: ubuntu-latest
+    needs: build
+
+    strategy:
+      matrix:
+        chart: [candles, matching-engine, price-stream, orders, redis]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update Helm values.yaml with new image tag
         run: |
           IMAGE_TAG=${{ github.sha }}
-          CHART_NAME=${{ steps.vars.outputs.imagename }}
-          yq e -i ".image.tag = \"$IMAGE_TAG\"" helm/$CHART_NAME/values.yaml
-          
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add helm/$CHART_NAME/values.yaml
-          git commit -m "ci: update $CHART_NAME image to $IMAGE_TAG"
-          git push
+          CHART_NAME=${{ matrix.chart }}
+
+          if [ -f helm/$CHART_NAME/values.yaml ]; then
+            yq e -i ".image.tag = \"$IMAGE_TAG\"" helm/$CHART_NAME/values.yaml
+
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add helm/$CHART_NAME/values.yaml
+            git commit -m "ci: update $CHART_NAME image to $IMAGE_TAG"
+            git push
+          else
+            echo "No values.yaml for $CHART_NAME, skipping update"
+          fi
