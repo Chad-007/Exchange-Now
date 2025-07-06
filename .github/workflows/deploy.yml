@@ -48,7 +48,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USER }}/${{ steps.vars.outputs.imagename }}:${{ github.sha }}
 
-    update-helm:
+  update-helm:
     runs-on: ubuntu-latest
     needs: build
 
@@ -78,7 +78,7 @@ jobs:
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
 
-            # Make sure to rebase to avoid conflicts with parallel pushes
+            # ensure latest main to avoid parallel push conflicts
             git fetch origin main
             git pull --rebase origin main
 
