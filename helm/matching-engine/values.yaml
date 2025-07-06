@@ -1,4 +1,4 @@
 image:
   repository: chad0/matching-engine
-  tag: "neww"
+  tag: "e7b6497f757a063663cdaa232ee660f6ee386e5d"
   pullPolicy: IfNotPresent
