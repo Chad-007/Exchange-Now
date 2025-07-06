@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: price-stream
-          image: "{{ .Values.image.repository}}::{{ .Values.image.tag}}"
+          image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"
           command: ["node","index.js"]
           ports:
             - containerPort: 4003
