@@ -78,7 +78,6 @@ jobs:
         run: |
           IMAGE_TAG=${{ github.sha }}
           CHARTS=("candles" "matching-engine" "price-stream" "orders" "redis" "api-gateway")
-
           for chart in "${CHARTS[@]}"; do
             VALUES_FILE="helm/$chart/values.yaml"
             if [ -f "$VALUES_FILE" ]; then
@@ -89,7 +88,6 @@ jobs:
               echo "No values.yaml for $chart, skipping"
             fi
           done
-
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
@@ -103,9 +101,18 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
           chmod 600 ~/.kube/config
 
-      - name: Deploy to Kubernetes using Helm
+      - name: Deploy Redis first with Helm
         run: |
-          CHARTS=("candles" "matching-engine" "price-stream" "orders" "redis" "api-gateway")
+          echo "Deploying chart: redis"
+          helm upgrade --install redis ./helm/redis --namespace default --create-namespace
+
+      - name: Wait for Redis to be ready
+        run: |
+          kubectl rollout status statefulset redis --namespace default --timeout=180s || true
+
+      - name: Deploy remaining Helm charts
+        run: |
+          CHARTS=("candles" "matching-engine" "price-stream" "orders" "api-gateway")
           for chart in "${CHARTS[@]}"; do
             echo "Deploying chart: $chart"
             helm upgrade --install $chart ./helm/$chart --namespace default --create-namespace
