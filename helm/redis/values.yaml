@@ -1,4 +1,4 @@
 image:
   repository: redis
-  tag: bf47cf0816344934cf178919efea55f1755b1679
+  tag: f4cdfd59b9c721a6d4ec1cb8950113abc2218044
   pullPolicy: Always
