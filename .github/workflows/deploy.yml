@@ -82,7 +82,7 @@ jobs:
             VALUES_FILE="helm/$chart/values.yaml"
             if [ -f "$VALUES_FILE" ]; then
               echo "Setting tag to $IMAGE_TAG in $VALUES_FILE"
-              yq -i ".image.tag = \"$IMAGE_TAG\"" "$VALUES_FILE"
+              yq -i -y ".image.tag = \"$IMAGE_TAG\"" "$VALUES_FILE"
               git add "$VALUES_FILE"
             else
               echo "No values.yaml for $chart, skipping"
