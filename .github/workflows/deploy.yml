@@ -55,7 +55,7 @@ jobs:
 
     strategy:
       matrix:
-        chart: [candles, matching-engine, price-stream, orders, redis]
+        chart: [candles, matching-engine, price-stream, orders, redis, api-gateway]
 
     steps:
       - name: Checkout

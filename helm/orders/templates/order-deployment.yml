@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: "{{ .Values.image.repository}}::{{ .Values.image.tag}}"
+          image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"
           command: ["node","index.js"]
           ports:
             - containerPort: 4002

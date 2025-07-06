@@ -1,4 +1,4 @@
 image:
   repository: redis
   tag: bf47cf0816344934cf178919efea55f1755b1679
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
