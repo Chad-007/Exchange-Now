@@ -1,23 +1,23 @@
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: candle-aggregator
-      spec:
-        replicas: 1
-        selector:
-          matchLabels:
-            app: candle-aggregator
-        template:
-          metadata:
-            labels:
-              app: candle-aggregator
-            annotations:
-              checksum/imageTag: "{{.Values.image.tag}}"
-          spec:
-            containers:
-            - name: candle-aggregator
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-              command: ["node","candle-aggregator.js"]
-              env:
-              - name: REDIS_HOST
-                value: "redis"  
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: candle-aggregator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: candle-aggregator
+  template:
+    metadata:
+      labels:
+        app: candle-aggregator
+      annotations:
+        rollme: "{{ .Values.image.tag }}"
+    spec:
+      containers:
+        - name: candle-aggregator
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ["node", "candle-aggregator.js"]
+          env:
+            - name: REDIS_HOST
+              value: "redis"
