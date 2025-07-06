@@ -73,7 +73,7 @@ jobs:
 
           if [ -f "$VALUES_FILE" ]; then
             echo "Setting tag to $IMAGE_TAG in $VALUES_FILE"
-            yq e -i -y ".image.tag = \"$IMAGE_TAG\"" "$VALUES_FILE"
+            yq -i -y ".image.tag = \"$IMAGE_TAG\"" "$VALUES_FILE"
 
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
