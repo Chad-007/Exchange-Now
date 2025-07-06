@@ -12,6 +12,7 @@ on:
       - 'services/order-service/**'
       - 'helm/**'
       - 'redis/**'
+      - 'api-gateway/**'
 
 jobs:
   build:
@@ -19,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        service: [candles, matching-engine, price-stream, services/order-service]
+        service: [api-gateway, candles, matching-engine, price-stream, services/order-service]
 
     steps:
       - name: Checkout
