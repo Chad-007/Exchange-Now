@@ -1,4 +1,4 @@
 image:
   repository: chad0/price-stream
-  tag: fec40e5a6d4fd2d8993e7120f439cbd9ac4342e5
+  tag: ab3a662977f787684682c9e4981658950272a38b
   pullPolicy: Always
