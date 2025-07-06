@@ -12,12 +12,12 @@ spec:
       labels:
         app: candle-aggregator
       annotations:
-        rollme: "{{ .Values.image.tag }}"
+        rollme: "{{ randAlphaNum 5 | quote }}"
     spec:
       containers:
         - name: candle-aggregator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          command: ["node", "candle-aggregator.js"]
+          command: ["node","candle-aggregator.js"]
           env:
             - name: REDIS_HOST
               value: "redis"
