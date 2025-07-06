@@ -77,7 +77,7 @@ jobs:
       - name: Update Helm values.yaml for all charts
         run: |
           IMAGE_TAG=${{ github.sha }}
-          CHARTS=("candles" "matching-engine" "price-stream" "orders" "redis" "api-gateway")
+          CHARTS=("candles" "matching-engine" "price-stream" "orders"  "api-gateway")
           for chart in "${CHARTS[@]}"; do
             VALUES_FILE="helm/$chart/values.yaml"
             if [ -f "$VALUES_FILE" ]; then
@@ -112,7 +112,7 @@ jobs:
 
       - name: Deploy remaining Helm charts
         run: |
-          CHARTS=("candles" "matching-engine" "price-stream" "orders" "api-gateway")
+          CHARTS=("candles" "matching-engine" "price-stream" "orders" "api-gateway" "ingress")
           for chart in "${CHARTS[@]}"; do
             echo "Deploying chart: $chart"
             helm upgrade --install $chart ./helm/$chart --namespace default --create-namespace

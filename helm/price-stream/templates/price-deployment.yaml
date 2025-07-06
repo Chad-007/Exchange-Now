@@ -29,7 +29,7 @@ kind: Service
 metadata:
   name: price-stream
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: price-stream
   ports:
