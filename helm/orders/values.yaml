@@ -1,4 +1,4 @@
 image:
   repository: chad0/order-service
-  tag: a25a38d50bf4f77f4d28c6cd9e94272619d910d1
+  tag: 782072f209eade2e7540cb1f3a503562adbfd1ec
   pullPolicy: Always
