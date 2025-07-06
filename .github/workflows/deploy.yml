@@ -53,10 +53,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
-    strategy:
-      matrix:
-        chart: [candles, matching-engine, price-stream, orders, redis, api-gateway]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -77,24 +73,25 @@ jobs:
           git checkout main
           git pull --rebase origin main
 
-      - name: Update Helm values.yaml with new image tag
+      - name: Update Helm values.yaml for all charts
         run: |
           IMAGE_TAG=${{ github.sha }}
-          CHART_NAME=${{ matrix.chart }}
-          VALUES_FILE="helm/$CHART_NAME/values.yaml"
+          CHARTS=("candles" "matching-engine" "price-stream" "orders" "redis" "api-gateway")
 
-          if [ -f "$VALUES_FILE" ]; then
-            echo "Setting tag to $IMAGE_TAG in $VALUES_FILE"
-            yq -i -y ".image.tag = \"$IMAGE_TAG\"" "$VALUES_FILE"
-
-            git add "$VALUES_FILE"
-
-            if git diff --cached --quiet; then
-              echo "No change in $VALUES_FILE, skipping commit."
+          for chart in "${CHARTS[@]}"; do
+            VALUES_FILE="helm/$chart/values.yaml"
+            if [ -f "$VALUES_FILE" ]; then
+              echo "Setting tag to $IMAGE_TAG in $VALUES_FILE"
+              yq -i ".image.tag = \"$IMAGE_TAG\"" "$VALUES_FILE"
+              git add "$VALUES_FILE"
             else
-              git commit -m "ci: update $CHART_NAME image to $IMAGE_TAG"
-              git push origin main
+              echo "No values.yaml for $chart, skipping"
             fi
+          done
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
           else
-            echo "No values.yaml for $CHART_NAME, skipping"
+            git commit -m "ci: update all Helm charts to $IMAGE_TAG"
+            git push origin main
           fi
