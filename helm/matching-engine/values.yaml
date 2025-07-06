@@ -1,4 +1,4 @@
 image:
   repository: chad0/matching-engine
-  tag: 85aaaa8637ea199c169465ec07383004654504a5
+  tag: a25a38d50bf4f77f4d28c6cd9e94272619d910d1
   pullPolicy: Always
