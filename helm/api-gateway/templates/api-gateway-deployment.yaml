@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: "{{ .Value.image.repository}}:{{ .Value.image.tag}}"
+        image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"
         ports:
         - containerPort: 4000
         env:
