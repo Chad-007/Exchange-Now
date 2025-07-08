@@ -4,28 +4,32 @@ metadata:
   name: exchange-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://frontend.yourdomain.com,http://localhost:3000"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Content-Type,Accept,Origin"
 spec:
   ingressClassName: nginx
   rules:
     - host: yourdomain.com
       http:
         paths:
-          - path: /orders(/|$)(.*)
-            pathType: Prefix
+          - path: /ordersapi(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: order-service
                 port:
                   number: 4002
-          - path: /price(/|$)(.*)
-            pathType: Prefix
+          - path: /priceapi(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: price-stream
                 port:
                   number: 4003
-          - path: /api(/|$)(.*)
-            pathType: Prefix
+          - path: /api-gate(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: api-gateway
