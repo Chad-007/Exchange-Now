@@ -5,9 +5,14 @@
       const Redis = require("ioredis");
       const redis = new Redis({ host: process.env.REDIS_HOST });
       const app = express();
-      app.use(cors());
-      app.use(express.json());
+      app.use(cors({
+      origin: "http://localhost:3000", // or use "*" during development
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Authorization", "Content-Type", "Accept", "Origin"]
+}));
 
+      app.use(express.json());
+      // hardcoding the price for noow ill change it later
       const markets = [
       { symbol: "SOL_USDC", price: 22.15 },
       { symbol: "BTC_USDT", price: 30300 },
@@ -20,8 +25,6 @@
 
       app.get("/api/markets/:symbol/orderbook", async (req, res) => {
       const { symbol } = req.params;
-
-      
       const bidsKey = `orderbook_bids:${symbol}`;
       const asksKey = `orderbook_asks:${symbol}`;
       const bidsAmountKey = `amounts:${symbol}:bids`;

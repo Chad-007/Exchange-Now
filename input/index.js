@@ -1,13 +1,13 @@
 const axios = require("axios");
 
-const BASE_URL = "http://152.42.158.207:4002/api/orders";
+const BASE_URL = "http://yourdomain.com/ordersapi/api/orders";
 
 const symbols = ["SOL_USDC", "BTC_USDT", "ETH_USDT"];
 
 const priceRanges = {
-  SOL_USDC: [22, 23],
-  BTC_USDT: [30000, 30500],
-  ETH_USDT: [1950, 2050],
+  SOL_USDC: [100, 200],
+  BTC_USDT: [200, 300],
+  ETH_USDT: [300, 400],
 };
 
 function generateOrder() {
@@ -39,7 +39,7 @@ async function simulate() {
     } catch (err) {
       console.error(`Error placing order: ${err.message}`);
     }
-    await new Promise((resolve) => setTimeout(resolve, 200)); // 0.2s delay
+    await new Promise((resolve) => setTimeout(resolve, 100)); // 0.2s delay
   }
 
   console.log("Simulation complete with 0.2s interval between orders.");

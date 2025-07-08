@@ -33,5 +33,6 @@ spec:
   selector:
     app: order-service
   ports:
-    - port: 4002
+    - name: http
+      port: 4002
       targetPort: 4002

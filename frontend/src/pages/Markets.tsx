@@ -9,7 +9,7 @@ interface Market {
   volume24h: number;
 }
 
-// --- Futuristic UI Styles ---
+
 const PageStyles = () => (
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -231,8 +231,8 @@ const Markets = () => {
         const formattedMarkets = res.data.map((m: any) => ({
           symbol: m.symbol,
           lastPrice: m.price || m.lastPrice || 0,
-          priceChangePercent: m.priceChangePercent || (Math.random() - 0.5) * 10, 
-          volume24h: m.volume24h || Math.random() * 1000000, 
+          priceChangePercent: m.priceChangePercent || (Math.random() - 0.5) * 10, //random
+          volume24h: m.volume24h || Math.random() * 1000000, //random
         }));
         setMarkets(formattedMarkets);
       })
@@ -273,7 +273,6 @@ const Markets = () => {
                   <tr 
                     key={m.symbol} 
                     onClick={() => goToMarket(m.symbol)}
-                    // Staggered animation delay for each row
                     style={{ animationDelay: `${index * 70}ms` }}
                   >
                     <td className="market-symbol-cell">{m.symbol.replace("USDC", "/USDC")}</td>
