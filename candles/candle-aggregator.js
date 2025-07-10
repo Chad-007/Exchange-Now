@@ -8,7 +8,7 @@ subscriber.on("message", async (channel, message) => {
   if (channel !== "trades_channel") return;
   const trade = JSON.parse(message);
   const { symbol, price, amount, timestamp } = trade;
-  const fiveSecondTimestamp = Math.floor(timestamp / 1000 / 5) * 5; 
+  const fiveSecondTimestamp = Math.floor(timestamp / 5000) * 5000;
   if (!tradeBuffers[symbol]) {
     tradeBuffers[symbol] = {};
   }
@@ -18,8 +18,8 @@ subscriber.on("message", async (channel, message) => {
   tradeBuffers[symbol][fiveSecondTimestamp].push(trade);
 });
 setInterval(async () => {
-  const now = Math.floor(Date.now() / 1000); 
-  const cutoff = now - 5; 
+  const now = Date.now();
+  const cutoff = now - 5000;
   for (const symbol of Object.keys(tradeBuffers)) {
     for (const slot of Object.keys(tradeBuffers[symbol])) {
       const slotInt = parseInt(slot);

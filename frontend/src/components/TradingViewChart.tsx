@@ -94,66 +94,53 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({ symbol }) => {
 
     window.addEventListener('resize', handleResize);
     // need to fix this not fully confident
-    let previousData: CandlestickData[] = [];
-async function loadCandles() {
-  try {
-    setError(null);
-    const res = await fetch(`http://64.225.86.126/api-gate/api/markets/${symbol}/candles`);
-
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-    const data = await res.json();
-    if (!Array.isArray(data) || data.length === 0) throw new Error("No data received");
-
-    const formatted: CandlestickData[] = data.map((candle: {
-      time: number;
-      open: number;
-      high: number;
-      low: number;
-      close: number;
-    }) => ({
-      time: (candle.time / 1000) as UTCTimestamp,
-      open: candle.open,
-      high: candle.high,
-      low: candle.low,
-      close: candle.close,
-    }));
-
-    const latest = formatted[formatted.length - 1];
-    const previous = formatted[formatted.length - 2];
-
-    if (candleSeriesRef.current) {
-      if (previousData.length === 0) {
-        candleSeriesRef.current.setData(formatted);
-        previousData = formatted;
-      } else {
-        const lastKnown = previousData[previousData.length - 1];
-        if (latest.time > lastKnown.time) {
-          candleSeriesRef.current.update(latest);
-          previousData.push(latest);
-        } else if (latest.time === lastKnown.time) {
-          candleSeriesRef.current.update(latest);
-          previousData[previousData.length - 1] = latest;
+    async function loadCandles() {
+      try {
+        setError(null);
+        const res = await fetch(`http://64.225.86.126/api-gate/api/markets/${symbol}/candles`);
+        
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
+        
+        const data = await res.json();
+        
+        if (!Array.isArray(data) || data.length === 0) {
+          throw new Error('No data received');
+        }
+
+        const formatted: CandlestickData[] = data.map((candle: { 
+          time: number; 
+          open: number; 
+          high: number; 
+          low: number; 
+          close: number 
+        }) => ({
+          time: (candle.time / 1000) as UTCTimestamp,
+          open: candle.open,
+          high: candle.high,
+          low: candle.low,
+          close: candle.close,
+        }));
+        candleSeries.setData(formatted);
+        const latest = formatted[formatted.length - 1];
+        const previous = formatted[formatted.length - 2];
+        if (latest && previous) {
+          const change = latest.close - previous.close;
+          const changePercent = (change / previous.close) * 100;
+          
+          setLastPrice(latest.close);
+          setPriceChange(change);
+          setPriceChangePercent(changePercent);
+        }
+        
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Error fetching candles", err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
+        setIsLoading(false);
       }
     }
-
-    if (latest && previous) {
-      const change = latest.close - previous.close;
-      const changePercent = (change / previous.close) * 100;
-      setLastPrice(latest.close);
-      setPriceChange(change);
-      setPriceChangePercent(changePercent);
-    }
-
-    setIsLoading(false);
-  } catch (err) {
-    console.error("Error fetching candles", err);
-    setError(err instanceof Error ? err.message : "Failed to fetch data");
-    setIsLoading(false);
-  }
-}
-
     loadCandles(); 
     const interval = setInterval(loadCandles, 5000); 
     return () => {
