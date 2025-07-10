@@ -246,7 +246,7 @@ const TradePage: React.FC = () => {
         setOrderPrice("");
         setOrderAmount("");
 
-     
+        // initial get the orderbook trades ticker etc..
         api.get(`/markets/${symbol}/orderbook`).then((res) => setOrderBook(res.data));
         api.get(`/markets/${symbol}/trades`).then((res) => setTrades(res.data.slice(0, 50)));
         api.get(`/markets/${symbol}/ticker`).then((res) => setTicker(res.data));

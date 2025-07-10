@@ -84,8 +84,6 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({ symbol }) => {
       wickUpColor: "#059669",
     });
     candleSeriesRef.current = candleSeries;
-
-    // Handle resize
     const handleResize = () => {
       if (chartContainerRef.current && chartRef.current) {
         chartRef.current.applyOptions({
@@ -95,63 +93,69 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({ symbol }) => {
     };
 
     window.addEventListener('resize', handleResize);
+    // need to fix this not fully confident
+    let previousData: CandlestickData[] = [];
+async function loadCandles() {
+  try {
+    setError(null);
+    const res = await fetch(`http://64.225.86.126/api-gate/api/markets/${symbol}/candles`);
 
-    // Fetch candles from backend
-    async function loadCandles() {
-      try {
-        setError(null);
-        const res = await fetch(`http://64.225.86.126/api-gate/api/markets/${symbol}/candles`);
-        
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        
-        const data = await res.json();
-        
-        if (!Array.isArray(data) || data.length === 0) {
-          throw new Error('No data received');
-        }
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
-        const formatted: CandlestickData[] = data.map((candle: { 
-          time: number; 
-          open: number; 
-          high: number; 
-          low: number; 
-          close: number 
-        }) => ({
-          time: (candle.time / 1000) as UTCTimestamp,
-          open: candle.open,
-          high: candle.high,
-          low: candle.low,
-          close: candle.close,
-        }));
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error("No data received");
 
-        candleSeries.setData(formatted);
-        
-        // Update price stats
-        const latest = formatted[formatted.length - 1];
-        const previous = formatted[formatted.length - 2];
-        
-        if (latest && previous) {
-          const change = latest.close - previous.close;
-          const changePercent = (change / previous.close) * 100;
-          
-          setLastPrice(latest.close);
-          setPriceChange(change);
-          setPriceChangePercent(changePercent);
+    const formatted: CandlestickData[] = data.map((candle: {
+      time: number;
+      open: number;
+      high: number;
+      low: number;
+      close: number;
+    }) => ({
+      time: (candle.time / 1000) as UTCTimestamp,
+      open: candle.open,
+      high: candle.high,
+      low: candle.low,
+      close: candle.close,
+    }));
+
+    const latest = formatted[formatted.length - 1];
+    const previous = formatted[formatted.length - 2];
+
+    if (candleSeriesRef.current) {
+      if (previousData.length === 0) {
+        candleSeriesRef.current.setData(formatted);
+        previousData = formatted;
+      } else {
+        const lastKnown = previousData[previousData.length - 1];
+        if (latest.time > lastKnown.time) {
+          candleSeriesRef.current.update(latest);
+          previousData.push(latest);
+        } else if (latest.time === lastKnown.time) {
+          candleSeriesRef.current.update(latest);
+          previousData[previousData.length - 1] = latest;
         }
-        
-        setIsLoading(false);
-      } catch (err) {
-        console.error("Error fetching candles", err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch data');
-        setIsLoading(false);
       }
     }
 
-    loadCandles(); // Load once immediately
-    const interval = setInterval(loadCandles, 5000); // Repeat every 5 sec
+    if (latest && previous) {
+      const change = latest.close - previous.close;
+      const changePercent = (change / previous.close) * 100;
+      setLastPrice(latest.close);
+      setPriceChange(change);
+      setPriceChangePercent(changePercent);
+    }
 
+    setIsLoading(false);
+  } catch (err) {
+    console.error("Error fetching candles", err);
+    setError(err instanceof Error ? err.message : "Failed to fetch data");
+    setIsLoading(false);
+  }
+}
+
+    loadCandles(); 
+    const interval = setInterval(loadCandles, 5000); 
     return () => {
       clearInterval(interval);
       window.removeEventListener('resize', handleResize);
@@ -178,7 +182,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({ symbol }) => {
 
   return (
     <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden shadow-2xl">
-      {/* Header */}
+      {}
       <div className="bg-gray-800 px-6 py-4 border-b border-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -224,7 +228,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({ symbol }) => {
         </div>
       </div>
 
-      {/* Chart Container */}
+      {}
       <div className="relative">
         {isLoading && (
           <div className="absolute inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-10">
@@ -251,7 +255,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({ symbol }) => {
         />
       </div>
       
-      {/* Footer */}
+      {}
       <div className="bg-gray-800 px-6 py-3 border-t border-gray-700">
         <div className="flex items-center justify-between text-sm text-gray-400">
           <div className="flex items-center space-x-4">

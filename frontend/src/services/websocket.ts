@@ -12,7 +12,7 @@ interface OrderBook {
   bids: { price: number; amount: number }[];
   asks: { price: number; amount: number }[];
 }
-
+// for live updates
 export function connectSocket(
   symbol: string,
   onTrade: (trade: Trade) => void,

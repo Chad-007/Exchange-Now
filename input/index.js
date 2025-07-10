@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const BASE_URL = "https://basics-sends-marvel-own.trycloudflare.com/ordersapi/api/orders";
+const BASE_URL = "http://64.225.86.126/ordersapi/api/orders";
 
 const symbols = ["SOL_USDC", "BTC_USDT", "ETH_USDT"];
 
