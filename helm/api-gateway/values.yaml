@@ -1,4 +1,4 @@
 image:
   repository: chad0/api-gateway
-  tag: 967b671ee77eebb89ddab29a049c06a44dcf6f90
+  tag: 387855f633239263582d3d5c8e5df9509650ff80
   pullPolicy: Always
