@@ -22,7 +22,7 @@ export function connectSocket(
     socket.close();
   }
 
-  socket = new WebSocket(`ws://yourdomain.com/priceapi`);
+  socket = new WebSocket(`ws://64.225.86.126/priceapi`);
 
   socket.onopen = () => {
     console.log("WebSocket connected to", symbol);

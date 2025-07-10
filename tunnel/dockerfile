@@ -1,0 +1,2 @@
+FROM cloudflare/cloudflared:latest
+CMD ["tunnel", "--url", "http://yourdomain.com", "--no-autoupdate"]

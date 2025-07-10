@@ -100,7 +100,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({ symbol }) => {
     async function loadCandles() {
       try {
         setError(null);
-        const res = await fetch(`http://yourdomain.com/api-gate/api/markets/${symbol}/candles`);
+        const res = await fetch(`http://64.225.86.126/api-gate/api/markets/${symbol}/candles`);
         
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

@@ -280,11 +280,10 @@ const TradePage: React.FC = () => {
                 payload.price = parseFloat(orderPrice);
             }
 
-            const response = await api.post("http://yourdomain.com/ordersapi/api/orders", payload);
-
+            const response = await api.post("http://64.225.86.126/ordersapi/api/orders", payload);
             console.log("Order placed:", response.data);
-            alert("Order placed successfully!");
             
+
             setOrderPrice("");
             setOrderAmount("");
         } catch (err) {
