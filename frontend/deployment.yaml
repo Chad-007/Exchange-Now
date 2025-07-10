@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: chad0/front-final:new
+          image: chad0/front-final:latestt
           ports:
             - containerPort: 3000
 ---

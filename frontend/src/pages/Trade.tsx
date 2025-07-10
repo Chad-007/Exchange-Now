@@ -276,7 +276,13 @@ const TradePage: React.FC = () => {
                 amount: parseFloat(orderAmount)
             };
 
-            if (isLimit) {
+            if(orderType==="market" && orderSide==="buy"){
+                payload.total    = parseFloat(orderAmount)
+            }else{
+                payload.amount = parseFloat(orderAmount)
+            }
+
+            if (orderType==="limit") {
                 payload.price = parseFloat(orderPrice);
             }
 
