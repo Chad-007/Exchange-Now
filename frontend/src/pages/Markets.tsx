@@ -12,112 +12,81 @@ interface Market {
 
 const PageStyles = () => (
   <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 
     :root {
-      --background-deep-space: #020010;
-      --glass-background-rgb: 10, 10, 25;
-      --border-color: rgba(0, 200, 255, 0.2);
-      --text-primary: #e0e5f0;
-      --text-secondary: #808a9d;
-      --accent-green: #00f5a0;
-      --accent-red: #f54266;
-      --accent-cyan: #00c8ff;
-      --accent-cyan-glow: rgba(0, 200, 255, 0.3);
-      --hover-color: rgba(0, 200, 255, 0.07);
-      --font-family-sans: 'Inter', sans-serif;
-      --font-family-mono: 'Roboto Mono', monospace;
-      --transition-fast: all 0.2s ease-in-out;
-      --transition-medium: all 0.4s ease-in-out;
+      --background-dark: #0A0A0A;
+      --background-element: #1A1A1A;
+      --text-primary: #EAEAEA;
+      --text-secondary: #888888;
+      --border-color: #333333;
+      --hover-background: #252525;
+      --hover-glow: rgba(255, 255, 255, 0.04);
+      --font-family-main: 'JetBrains Mono', monospace;
+      --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* --- Keyframe Animations --- */
-    @keyframes gridPan {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 100% 100%; }
-    }
-    
     @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(20px) scale(0.98); }
-        100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    @keyframes textShimmer {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
+        0% { opacity: 0; transform: translateY(15px); }
+        100% { opacity: 1; transform: translateY(0); }
     }
     
     @keyframes slideInRow {
-        0% { opacity: 0; transform: translateX(-20px); }
+        0% { opacity: 0; transform: translateX(-15px); }
         100% { opacity: 1; transform: translateX(0); }
     }
     
-    @keyframes aurora-border {
-      0% { box-shadow: 0 0 20px rgba(0,0,0,0.4), 0 0 15px var(--accent-cyan-glow), inset 0 0 10px rgba(var(--glass-background-rgb),0.7); }
-      50% { box-shadow: 0 0 35px rgba(0,0,0,0.4), 0 0 25px var(--accent-cyan-glow), inset 0 0 14px rgba(var(--glass-background-rgb),0.7); }
-      100% { box-shadow: 0 0 20px rgba(0,0,0,0.4), 0 0 15px var(--accent-cyan-glow), inset 0 0 10px rgba(var(--glass-background-rgb),0.7); }
-    }
-    
     @keyframes pulse-skeleton {
-      0% { background-color: rgba(255, 255, 255, 0.05); }
-      50% { background-color: rgba(255, 255, 255, 0.08); }
-      100% { background-color: rgba(255, 255, 255, 0.05); }
+      0% { background-color: rgba(255, 255, 255, 0.06); }
+      50% { background-color: rgba(255, 255, 255, 0.09); }
+      100% { background-color: rgba(255, 255, 255, 0.06); }
     }
 
+    @keyframes subtleGlow {
+      0% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 255, 255, 0.02); }
+      50% { box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.05); }
+      100% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 255, 255, 0.02); }
+    }
+
+    @keyframes subtleShimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+    }
+
+    @keyframes dataFlashPositive {
+      0% { background-color: transparent; }
+      25% { background-color: rgba(234, 234, 234, 0.1); }
+      100% { background-color: transparent; }
+    }
+    
+    @keyframes dataFlashNegative {
+      0% { background-color: transparent; }
+      25% { background-color: rgba(136, 136, 136, 0.1); }
+      100% { background-color: transparent; }
+    }
 
     /* --- Main Page Wrapper --- */
     .markets-page-wrapper {
-      background-color: var(--background-deep-space);
-      background-image: 
-        /* Starfield */
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15) 0.5px, transparent 0.5px),
-        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.15) 0.5px, transparent 0.5px),
-        radial-gradient(circle at 50% 90%, rgba(255,255,255,0.1) 1px, transparent 1px),
-        /* Grid */
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+      background-color: var(--background-dark);
       color: var(--text-primary);
-      font-family: var(--font-family-sans);
+      font-family: var(--font-family-main);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 2rem;
-      overflow: hidden;
-      position: relative;
     }
 
-    /* Animated Grid Overlay */
-    .markets-page-wrapper::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
+    /* --- Main Container --- */
+    .markets-container {
       width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(var(--accent-cyan-glow) 1px, transparent 1px),
-        linear-gradient(90deg, var(--accent-cyan-glow) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridPan 25s linear infinite;
-      opacity: 0.2;
-      z-index: 0;
-    }
-
-    /* --- Glass Container --- */
-    .markets-container-glass {
-      width: 100%;
-      max-width: 900px;
-      background: rgba(var(--glass-background-rgb), 0.65);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      max-width: 800px;
+      background: transparent;
       border: 1px solid var(--border-color);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 2.5rem 3rem;
-      z-index: 1;
-      animation: fadeIn 0.8s ease-out, aurora-border 6s ease-in-out infinite;
+      animation: fadeIn 0.7s var(--transition-smooth), subtleGlow 8s ease-in-out infinite;
     }
 
     /* --- Header --- */
@@ -126,24 +95,22 @@ const PageStyles = () => (
       margin-bottom: 2.5rem;
     }
     .markets-header-title {
-      font-size: 2.8rem;
-      font-weight: 700;
-      letter-spacing: -1.5px;
-      background: linear-gradient(90deg, #d0d5e0, #ffffff, #d0d5e0);
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: -1px;
+      margin: 0;
+      background: linear-gradient(90deg, #888, #fff, #888);
       background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: textShimmer 4s linear infinite;
-      margin: 0;
+      animation: subtleShimmer 7s linear infinite;
     }
     .markets-header-subtitle {
         color: var(--text-secondary);
-        font-family: var(--font-family-mono);
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         margin-top: 0.5rem;
         text-transform: uppercase;
-        letter-spacing: 2px;
-        opacity: 0.7;
+        letter-spacing: 1.5px;
     }
     
     /* --- Table Styling --- */
@@ -153,97 +120,89 @@ const PageStyles = () => (
     
     .markets-table {
       width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
+      border-collapse: collapse;
       text-align: left;
     }
-
+    
     .markets-table thead th {
       color: var(--text-secondary);
       font-weight: 500;
       padding: 1rem 1.25rem;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       border-bottom: 1px solid var(--border-color);
+      transition: var(--transition-smooth);
     }
     .markets-table th:last-child, .markets-table td:last-child {
         text-align: right;
     }
 
     .markets-table tbody tr {
+      border-bottom: 1px solid var(--border-color);
       cursor: pointer;
-      transition: var(--transition-fast);
-      position: relative;
       opacity: 0; /* Initially hidden for animation */
-      animation: slideInRow 0.5s ease-out forwards;
-      border-bottom: 1px solid;
-      border-image: linear-gradient(to right, transparent, var(--border-color), transparent) 1;
+      animation: slideInRow 0.4s ease-out forwards;
+      transition: var(--transition-smooth);
+      
+      /* For hover radial gradient */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 0% 0%;
+      background-image: radial-gradient(circle at center, var(--hover-glow) 0%, transparent 70%);
     }
+
+    /* --- Amazing Hover "Spotlight" Effect --- */
+    .markets-table:hover tbody tr:not(:hover) {
+        opacity: 0.5;
+    }
+
+    .markets-table tbody tr:hover {
+      background-color: var(--hover-background);
+      background-size: 200% 200%;
+      transform: translateY(-2px);
+    }
+    
     .markets-table tbody tr:last-child {
       border-bottom: none;
     }
 
-    /* Advanced Hover Effect */
-    .markets-table tbody tr::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        background-color: var(--accent-cyan);
-        transform: scaleY(0);
-        transition: transform 0.3s ease;
-        box-shadow: 0 0 10px var(--accent-cyan);
-    }
-
-    .markets-table tbody tr:hover {
-      background-color: var(--hover-color);
-    }
-    .markets-table tbody tr:hover::before {
-        transform: scaleY(1);
-    }
-
-
     .markets-table tbody td {
-      padding: 1.5rem 1.25rem;
+      padding: 1.25rem 1.25rem;
       vertical-align: middle;
-      font-family: var(--font-family-mono);
-      font-size: 1rem;
+      font-size: 0.9rem;
     }
     
     .market-symbol-cell {
-      font-weight: 600;
-      font-family: var(--font-family-sans);
+      font-weight: 500;
       color: var(--text-primary);
     }
 
     .price-change-cell.positive {
-      color: var(--accent-green);
-      text-shadow: 0 0 8px rgba(0, 245, 160, 0.4);
+      color: var(--text-primary);
+      animation: dataFlashPositive 1.2s ease-out;
     }
 
     .price-change-cell.negative {
-      color: var(--accent-red);
-      text-shadow: 0 0 8px rgba(245, 66, 102, 0.4);
+      color: var(--text-secondary);
+      animation: dataFlashNegative 1.2s ease-out;
     }
     
     .volume-cell {
-        color: var(--text-secondary);
+      color: var(--text-secondary);
     }
 
     /* --- Skeleton Loader --- */
     .skeleton-row td {
-        padding: 1.5rem 1.25rem;
+        padding: 1.25rem 1.25rem;
     }
     .skeleton-item {
         width: 80%;
-        height: 20px;
+        height: 18px;
         border-radius: 4px;
         animation: pulse-skeleton 1.5s ease-in-out infinite;
     }
-    .skeleton-item.short { width: 50%; }
+    .skeleton-item.short { width: 60%; }
     .skeleton-item.right { margin-left: auto; }
   `}</style>
 );
@@ -271,6 +230,7 @@ const Markets = () => {
         setLoading(false);
       }
     };
+    // Keep timeout for skeleton visibility
     setTimeout(() => fetchMarkets(), 1500);
 
   }, []);
@@ -291,11 +251,11 @@ const Markets = () => {
   const SkeletonLoader = () => (
     <tbody>
       {Array.from({ length: 5 }).map((_, index) => (
-        <tr key={index} className="skeleton-row" style={{ animationDelay: `${index * 100}ms` }}>
+        <tr key={index} className="skeleton-row">
           <td><div className="skeleton-item"></div></td>
           <td><div className="skeleton-item short"></div></td>
           <td><div className="skeleton-item short"></div></td>
-          <td><div className="skeleton-item right"></div></td>
+          <td><div className="skeleton-item short right"></div></td>
         </tr>
       ))}
     </tbody>
@@ -305,7 +265,7 @@ const Markets = () => {
     <>
       <PageStyles />
       <div className="markets-page-wrapper">
-        <div className="markets-container-glass">
+        <div className="markets-container">
           <div className="markets-header-container">
             <h1 className="markets-header-title">Market Overview</h1>
             <p className="markets-header-subtitle">Real-Time Data Stream</p>
@@ -326,7 +286,7 @@ const Markets = () => {
                     <tr 
                       key={m.symbol} 
                       onClick={() => goToMarket(m.symbol)}
-                      style={{ animationDelay: `${index * 60}ms` }}
+                      style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <td className="market-symbol-cell">{m.symbol.replace("USDC", "/USDC")}</td>
                       <td>${m.lastPrice.toFixed(4)}</td>

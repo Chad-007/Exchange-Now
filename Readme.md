@@ -207,6 +207,7 @@ Each service can be customized via its respective `values.yaml`:
 
 Need to change the lastprice 24H change 24Hvolume etc.. hardcoded  values in the markets page and make it realtime.
 Make the Candles a bit realtime
+Change the utc time and make it ist
 
 ---
 ---
