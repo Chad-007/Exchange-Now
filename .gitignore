@@ -1,8 +1,2 @@
-/apigateway/node_modules
-/candles/node_modules
-/helm/node_modules
-/frontend/node_modules
-/input/node_modules
-/matching-engine/node_modules
-/price-stream/node_modules
-/services/order-service/node_modules
+**/node_modules
+
