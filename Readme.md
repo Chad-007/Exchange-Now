@@ -197,7 +197,6 @@ Each service can be customized via its respective `values.yaml`:
 
 ## 📌 Developer Notes
 
-- Matching logic is FIFO priority within price levels
 - Orders are processed as either LIMIT or MARKET
 - The system can support thousands of updates per second using Redis Pub/Sub
 
