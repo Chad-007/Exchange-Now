@@ -229,7 +229,7 @@ We welcome contributions!
 4. Open a pull request
 ```
 
-Feel free to raise issues, suggest features, or just star the repo ⭐
+Feel free to raise issues, suggest features, or just star the repo 
 
 ---
 
@@ -243,4 +243,4 @@ Feel free to raise issues, suggest features, or just star the repo ⭐
 
 ---
 
-*"Trade like a pro — simulate before you go."* 🚀
+*"Trade like a pro — simulate before you go."* 
