@@ -202,7 +202,7 @@ Each service can be customized via its respective `values.yaml`:
 
 ---
 
-## 📜 Future Scope\
+## 📜 Future Scope
 
 Need to change the lastprice 24H change 24Hvolume etc.. hardcoded  values in the markets page and make it realtime.
 Make the Candles a bit realtime
