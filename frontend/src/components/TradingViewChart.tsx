@@ -246,13 +246,10 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({ symbol }) => {
       <div className="bg-gray-800 px-6 py-3 border-t border-gray-700">
         <div className="flex items-center justify-between text-sm text-gray-400">
           <div className="flex items-center space-x-4">
-            <span>Timeframe: 5m</span>
-            <span>•</span>
-            <span>Auto-refresh: 5s</span>
+            
           </div>
           <div className="flex items-center space-x-1">
-            <span>Powered by</span>
-            <span className="text-indigo-400 font-medium">TradingView</span>
+           
           </div>
         </div>
       </div>
