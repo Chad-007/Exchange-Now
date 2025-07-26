@@ -1,4 +1,4 @@
 image:
   repository: chad0/candles
-  tag: 0a2cd04f68771c8b78f503c400fa3f22dd313803
+  tag: a732886ff252f41adf3185109170da57db32ac27
   pullPolicy: Always
