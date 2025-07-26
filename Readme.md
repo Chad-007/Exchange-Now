@@ -3,7 +3,7 @@
 **Exchange-Now** is a high-performance, fully containerized cryptocurrency trading simulator inspired by real-world platforms like **Binance** and **Backpack Exchange**. Built with a microservices architecture and powered by Redis Pub/Sub, it simulates a real trading environment with orderbooks, matching, trades, charts, and WebSocket data — all in real time.
 
 🔗 [Live Demo](http://exchange-now.me)  
-📘 Status: Actively Developed | Public Demo Available
+📘 Status: Actively Developed | Public Demo Available | Only Supports desktop view 
 
 ---
 
